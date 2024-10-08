@@ -1,18 +1,19 @@
 #pragma once
-#include "Triangulations.h"
-#include <vector>
+#include <fstream>
+#include <iostream>
 #include <string>
+#include <vector>
+#include <unordered_map>
+#include <sstream>
+#include "Point.h"
 
-class FileHandler {
-private:
-    std::string inputFile;
+using namespace std;
 
+class Reader {
 public:
-    FileHandler(const std::string& input);
-    void readSTLFile(Triangulation& triangulation);
-    void writeVerticesToFile(const std::vector<Point>& vertices);
+    vector<Point> read_stl_file();
+    vector<double> get_unique_points();
 
 private:
-    void parseSTLLine(const std::string& line, Triangulation& triangulation, std::vector<Point>& vertices);
+    vector<double> unique_points;
 };
-
