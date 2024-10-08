@@ -1,58 +1,52 @@
 #include "STLtranslator.h"
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
-#include <iostream>
 
-FileHandler::FileHandler(const std::string& input) : inputFile(input) {}
-
-void FileHandler::readSTLFile(Triangulation& triangulation) {
-    std::ifstream inFile(inputFile);
-    if (!inFile.is_open()) {
-        throw std::runtime_error("Unable to open STL file");
-    }
-
-    std::string line;
-    std::vector<Point> vertices;
-
-    while (getline(inFile, line)) {
-        parseSTLLine(line, triangulation, vertices);
-    }
-
-    inFile.close();
-    writeVerticesToFile(vertices); // Write all vertices after reading
-}
-
-void FileHandler::writeVerticesToFile(const std::vector<Point>& vertices) {
-    std::ofstream dataFile("data.dat");
-    if (!dataFile.is_open()) {
-        throw std::runtime_error("Unable to open data.dat");
-    }
-
-    for (const auto& vertex : vertices) {
-        dataFile << vertex.x << " " << vertex.y << " " << vertex.z << "\n";
-    }
-
-    dataFile.close();
-}
-
-void FileHandler::parseSTLLine(const std::string& line, Triangulation& triangulation, std::vector<Point>& vertices) {
-    std::stringstream ss(line);
-    std::string word;
-
-    if (ss >> word && word == "vertex") {
-        float x, y, z;
-        if (ss >> x >> y >> z) {
-            Point vertex(static_cast<int>(x), static_cast<int>(y), static_cast<int>(z));
-            vertices.push_back(vertex); // Store every vertex read
-
-            // Create triangles (assuming 3 vertices per triangle)
-            if (vertices.size() % 3 == 0) {
-                triangulation.addTriangle(Triangle(vertices[vertices.size() - 3],
-                    vertices[vertices.size() - 2],
-                    vertices[vertices.size() - 1]));
+vector<Point> Reader::read_stl_file() {
+    vector<Point> point_list;
+    unordered_map<double, int> unique_value_map;
+    ifstream myfile("C:\\Users\\Prerna Jadhav\\source\\repos\\ShapePlotter\\3D_ShapePlotter\\Header Files\\cube-ascii.stl");
+    string line;
+    int index = 0;
+    if (myfile.is_open()) {
+        while (getline(myfile, line)) {
+            istringstream iss(line);
+            string vertex;
+            double x, y, z;
+            if (iss >> vertex >> x >> y >> z) {
+                if (vertex == "vertex") {
+                    int x1, y1, z1;
+                    if (unique_value_map.find(x) == unique_value_map.end()) {
+                        unique_value_map[x] = index;
+                        unique_points.push_back(x);
+                        x1 = index++;
+                    }
+                    else {
+                        x1 = unique_value_map[x];
+                    }
+                    if (unique_value_map.find(y) == unique_value_map.end()) {
+                        unique_value_map[y] = index;
+                        unique_points.push_back(y);
+                        y1 = index++;
+                    }
+                    else {
+                        y1 = unique_value_map[y];
+                    }
+                    if (unique_value_map.find(z) == unique_value_map.end()) {
+                        unique_value_map[z] = index;
+                        unique_points.push_back(z);
+                        z1 = index++;
+                    }
+                    else {
+                        z1 = unique_value_map[z];
+                    }
+                    Point p(x1, y1, z1);
+                    point_list.push_back(p);
+                }
             }
         }
     }
+    return point_list;
 }
 
+vector<double> Reader::get_unique_points() {
+    return unique_points;
+}
