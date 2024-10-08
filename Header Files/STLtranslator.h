@@ -15,3 +15,4 @@ public:
 private:
     void parseSTLLine(const std::string& line, Triangulation& triangulation, std::vector<Point>& vertices);
 };
+
