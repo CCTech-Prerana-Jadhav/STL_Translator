@@ -55,3 +55,4 @@ void FileHandler::parseSTLLine(const std::string& line, Triangulation& triangula
         }
     }
 }
+
