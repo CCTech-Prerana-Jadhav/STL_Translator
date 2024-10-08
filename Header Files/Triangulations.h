@@ -8,3 +8,4 @@ public:
 
     void addTriangle(const Triangle& triangle);
 };
+
