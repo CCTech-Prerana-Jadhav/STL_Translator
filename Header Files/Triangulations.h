@@ -1,11 +1,14 @@
 #pragma once
-#include "Triangle.h"
 #include <vector>
+#include "Triangle.h"
+
+using namespace std;
 
 class Triangulation {
 public:
-    std::vector<Triangle> triangles;
-
     void addTriangle(const Triangle& triangle);
-};
+    vector<Triangle> getTriangles() const;
 
+private:
+    vector<Triangle> triangles;
+};
