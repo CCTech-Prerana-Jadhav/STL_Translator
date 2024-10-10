@@ -1,10 +1,7 @@
 #pragma once
-#include <fstream>
-#include <iostream>
-#include <string>
 #include <vector>
 #include <unordered_map>
-#include <sstream>
+#include <string>
 #include "Point.h"
 
 using namespace std;
